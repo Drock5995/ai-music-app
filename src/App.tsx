@@ -1,24 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useAuth } from './hooks/useAuth';
+import Auth from './components/Auth';
+import Dashboard from './components/Dashboard';
 
 function App() {
+  const { session } = useAuth();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container" style={{ padding: '50px 0 100px 0' }}>
+      {!session ? <Auth /> : <Dashboard key={session.user.id} />}
     </div>
   );
 }

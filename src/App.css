@@ -1,38 +1,217 @@
-.App {
+:root {
+  --background: #121212;
+  --surface: #1e1e1e;
+  --primary: #1DB954;
+  --primary-hover: #1ed760;
+  --text-primary: #FFFFFF;
+  --text-secondary: #b3b3b3;
+  --border: #2c2c2c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  padding-bottom: 120px; /* Space for sticky player */
+}
+
+/* --- Components --- */
+.button {
+  background-color: var(--primary);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 500px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--primary-hover);
+}
+
+.button--secondary {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.button--logout {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--text-secondary);
+  padding: 0.5rem 1rem;
+}
+
+.button--icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.button--icon:hover {
+  color: var(--text-primary);
+}
+
+.inputField {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  padding: 0.8rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* --- Upload Song --- */
+.upload-container {
+  background-color: var(--surface);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+/* --- Song List --- */
+.song-list-container {
+  background-color: var(--surface);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.song-list {
+  list-style: none;
+}
+
+.song-item {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+.song-item:last-child {
+  border-bottom: none;
+}
+
+.song-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.song-info {
+  cursor: pointer;
+}
+
+.song-name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.song-artist {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.song-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* --- Player --- */
+.player-sticky {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #000;
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.player-info .player-song-name {
+  font-weight: 600;
+}
+.player-info .player-artist-name {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.audio-player {
+  width: 100%;
+}
+
+/* --- Auth Page --- */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.auth-form {
+  background-color: var(--surface);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.auth-form h1 {
+  margin-bottom: 0.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.auth-form .description {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.auth-form form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  gap: 1rem;
 }
