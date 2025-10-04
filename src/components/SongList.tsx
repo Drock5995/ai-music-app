@@ -12,7 +12,7 @@ interface SongListProps {
   onDataChange: () => void;
   onPlay: (song: Song) => void;
   onAddToQueue?: (song: Song) => void;
-  layout?: 'list' | 'grid';
+  layout?: 'list' | 'grid' | 'compact';
   showArtwork?: boolean;
 }
 
@@ -32,7 +32,7 @@ export default function SongList({
 
   // Use virtual scrolling for large lists (>20 items)
   const useVirtualScrolling = songs.length > 20;
-  const itemHeight = layout === 'grid' ? 120 : 80; // Approximate heights
+  const itemHeight = layout === 'grid' ? 120 : layout === 'compact' ? 60 : 80;
   const containerHeight = 400; // Fixed height for virtual scrolling
 
   const getArtistName = (song: Song) => {

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { useQueue } from '../contexts/QueueContext';
 import './PlayerEnhanced.css';
@@ -163,15 +164,24 @@ export default function PlayerEnhanced() {
           />
           <h1>{currentSong.name}</h1>
           <p>{getArtistName()}</p>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={progress}
-            onChange={handleProgressChange}
-            className="progress-bar"
-            aria-label="Song progress"
-          />
+          <motion.div
+            className="progress-bar-container"
+            onClick={(e) => {
+              const audio = audioRef.current;
+              if (!audio) return;
+              const rect = e.currentTarget.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const newTime = (x / rect.width) * audio.duration;
+              audio.currentTime = newTime;
+            }}
+          >
+            <motion.div
+              className="progress-bar"
+              style={{ width: `${progress}%` }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.1 }}
+            />
+          </motion.div>
           <div className="controls">
             <button onClick={prevSong} aria-label="Previous song">⏮</button>
             <button onClick={togglePlay} aria-label={isPlaying ? 'Pause' : 'Play'}>

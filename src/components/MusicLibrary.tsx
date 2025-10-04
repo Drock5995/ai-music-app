@@ -15,7 +15,7 @@ export default function MusicLibrary() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [layout, setLayout] = useState<'list' | 'grid'>('list');
+  const [layout, setLayout] = useState<'list' | 'grid' | 'compact'>('list');
 
   const fetchSongs = async () => {
     try {
@@ -59,7 +59,7 @@ export default function MusicLibrary() {
       <main className="main-content">
         <div className="library-header">
           <h1>Music Library</h1>
-          <LayoutToggle layout={layout} onLayoutChange={(newLayout) => setLayout(newLayout as 'list' | 'grid')} />
+          <LayoutToggle layout={layout} onLayoutChange={(newLayout) => setLayout(newLayout)} />
         </div>
         {error && <div>Error: {error}</div>}
         <SongList

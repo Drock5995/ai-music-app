@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 export default function Navigation() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
+  const drawerRef = useRef<HTMLElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -12,16 +14,49 @@ export default function Navigation() {
     setDrawerOpen(false);
   }, [location]);
 
-  // Close drawer on escape key
+  // Focus trapping and escape key handling
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && drawerOpen) {
+    if (!drawerOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
         setDrawerOpen(false);
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusableElements = drawerRef.current?.querySelectorAll(
+          'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusableElements) return;
+
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Set initial focus
+    const firstFocusable = drawerRef.current?.querySelector('a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])') as HTMLElement;
+    firstFocusable?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      toggleButtonRef.current?.focus();
+    };
   }, [drawerOpen]);
 
   // Prevent body scroll when drawer is open
@@ -94,6 +129,7 @@ export default function Navigation() {
     <>
       {/* Navigation Toggle Button */}
       <button
+        ref={toggleButtonRef}
         className="nav-toggle"
         onClick={toggleDrawer}
         aria-expanded={drawerOpen ? 'true' : 'false'}
@@ -119,6 +155,7 @@ export default function Navigation() {
       {/* Navigation Drawer */}
       <nav
         id="nav-drawer"
+        ref={drawerRef}
         className={`nav-drawer ${drawerOpen ? 'open' : ''}`}
         role="navigation"
         aria-label="Main navigation"
