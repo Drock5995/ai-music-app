@@ -6,7 +6,7 @@ import Navigation from './Navigation';
 import { useQueue } from '../contexts/QueueContext';
 
 export default function MusicLibrary() {
-  const { playSong, addToQueue } = useQueue();
+  const { playSong, addToQueue, clearQueue } = useQueue();
   const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +29,16 @@ export default function MusicLibrary() {
     }
   };
 
+  const handlePlay = (song: Song) => {
+    const index = songs.findIndex(s => s.id === song.id);
+    if (index === -1) return;
+    clearQueue();
+    for (let i = index; i < songs.length; i++) {
+      addToQueue(songs[i]);
+    }
+    playSong(song);
+  };
+
   useEffect(() => {
     fetchSongs();
   }, []);
@@ -38,7 +48,7 @@ export default function MusicLibrary() {
       <Navigation />
       <h1>Music Library</h1>
       {error && <div>Error: {error}</div>}
-      <SongList songs={songs} loading={loading} error={error} onDataChange={fetchSongs} onPlay={playSong} onAddToQueue={addToQueue} />
+      <SongList songs={songs} loading={loading} error={error} onDataChange={fetchSongs} onPlay={handlePlay} onAddToQueue={addToQueue} />
     </div>
   );
 }

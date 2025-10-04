@@ -18,6 +18,7 @@ export default function Player() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [shouldPlay, setShouldPlay] = useState(false);
 
   const getArtistName = () => {
     if (!currentSong) return 'Unknown Artist';
@@ -28,10 +29,13 @@ export default function Player() {
     if (currentSong) {
       setCurrentFilePath(currentSong.file_path);
       setIsSecondary(false);
+      setShouldPlay(true);
     } else {
       setCurrentFilePath(null);
     }
   }, [currentSong?.id, currentSong?.file_path]);
+
+  // Removed the play useEffect, will handle in canplay event
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -41,19 +45,27 @@ export default function Player() {
     const updateDuration = () => setDuration(audio.duration);
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
+    const handleCanPlay = () => {
+      if (shouldPlay) {
+        audio.play().catch(() => {});
+        setShouldPlay(false);
+      }
+    };
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
+    audio.addEventListener('canplay', handleCanPlay);
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('canplay', handleCanPlay);
     };
-  }, [currentFilePath]);
+  }, [currentFilePath, shouldPlay]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
