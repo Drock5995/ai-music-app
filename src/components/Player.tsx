@@ -35,8 +35,6 @@ export default function Player() {
     }
   }, [currentSong?.id, currentSong?.file_path]);
 
-  // Removed the play useEffect, will handle in canplay event
-
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -127,10 +125,16 @@ export default function Player() {
   }
 
   return (
-    <div className="player-sticky">
+    <div className="player-sticky" role="region" aria-label="Music player">
+      <div className="player-album-art" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="12" cy="12" r="3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
       <div className="player-info">
-        <p className="player-song-name">{currentSong.name} {isSecondary ? '(Secondary)' : ''}</p>
-        <p className="player-artist-name">{getArtistName()}</p>
+        <p className="player-song-name" tabIndex={0}>{currentSong.name} {isSecondary ? '(Secondary)' : ''}</p>
+        <p className="player-artist-name" tabIndex={0}>{getArtistName()}</p>
         {currentSong.secondary_file_path && (
           <button onClick={toggleVersion} className="button--small" aria-label="Toggle version">
             Switch to {isSecondary ? 'Primary' : 'Secondary'}
@@ -160,6 +164,7 @@ export default function Player() {
             value={(currentTime / duration) * 100 || 0}
             onChange={handleSeek}
             className="progress-bar"
+            aria-label="Seek slider"
           />
           <span className="time">{formatTime(duration)}</span>
         </div>
@@ -195,4 +200,3 @@ export default function Player() {
       </audio>
     </div>
   );
-}

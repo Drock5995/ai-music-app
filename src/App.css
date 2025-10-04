@@ -1,11 +1,63 @@
 :root {
+  /* Colors */
   --background: #121212;
   --surface: #1e1e1e;
+  --surface-hover: #2a2a2a;
+  --surface-active: #333333;
   --primary: #1DB954;
   --primary-hover: #1ed760;
+  --primary-active: #169c46;
+  --secondary: #535353;
+  --secondary-hover: #666666;
+  --accent: #ffffff;
   --text-primary: #FFFFFF;
   --text-secondary: #b3b3b3;
+  --text-muted: #808080;
   --border: #2c2c2c;
+  --border-hover: #404040;
+  --error: #ff6b6b;
+  --success: #51cf66;
+  --warning: #ffd43b;
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
 }
 
 * {
@@ -17,9 +69,48 @@
 body {
   background-color: var(--background);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Navigation --- */
+.nav {
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}
+
+.nav-link.active {
+  color: var(--primary);
+  background-color: rgba(29, 185, 84, 0.1);
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .dashboard-layout {
@@ -176,26 +267,56 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #000;
+  background: linear-gradient(135deg, var(--background) 0%, var(--surface) 100%);
   border-top: 1px solid var(--border);
-  padding: 1rem 1.5rem;
+  padding: var(--spacing-lg);
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: var(--spacing-lg);
+  box-shadow: var(--shadow-xl);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.player-album-art {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-md);
+}
+
+.player-album-art svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-primary);
 }
 
 .player-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex: 1;
+  min-width: 0;
 }
 
-.player-info .player-song-name {
-  font-weight: 600;
+.player-song-name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.player-info .player-artist-name {
+
+.player-artist-name {
   color: var(--text-secondary);
-  font-size: 0.8rem;
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .player-controls {
