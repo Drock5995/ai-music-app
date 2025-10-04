@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../hooks/useAuth';
 import { Artist } from '../types';
@@ -11,6 +12,7 @@ import FeaturedSongs from './FeaturedSongs';
 export default function Home() {
   const { session } = useAuth();
   const [artists, setArtists] = useState<Artist[]>([]);
+  const [editingArtist, setEditingArtist] = useState<Artist | undefined>(undefined);
 
   const fetchArtists = async () => {
     try {
@@ -37,16 +39,25 @@ export default function Home() {
       if (error) throw error;
       if (data) {
         fetchArtists();
+        setEditingArtist(undefined);
       }
     } catch (error: any) {
       console.error('Error saving artist:', error.message || error);
     }
   };
 
+  const handleEditArtist = (artist: Artist) => {
+    setEditingArtist(artist);
+    // ensure form is visible / in focus in main area
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCancelEdit = () => setEditingArtist(undefined);
+
   return (
     <div className="dashboard-layout">
       {/* left nav / header area (keeps parity with Dashboard) */}
-      <Navigation />
+  <Navigation artists={artists} onEditArtist={handleEditArtist} />
 
   <main className="main-content grid-main">
         <PersonalizedHeader
@@ -56,18 +67,18 @@ export default function Home() {
 
   <FeaturedSongs />
 
-  <div className="home-grid">
-          <section className="home-card">
+        <div className="home-grid">
+          <motion.section className="home-card" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} whileHover={{ scale: 1.01 }}>
             <div className="section-header">
               <h2>Create or Edit Artist</h2>
               <p className="text-muted">Add artist metadata used when uploading songs.</p>
             </div>
             <div className="card-body">
-              <ArtistForm onSave={handleSaveArtist} />
+              <ArtistForm onSave={handleSaveArtist} artist={editingArtist} />
             </div>
-          </section>
+          </motion.section>
 
-          <section className="home-card">
+          <motion.section className="home-card" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} whileHover={{ scale: 1.01 }}>
             <div className="section-header">
               <h2>Upload New Song</h2>
               <p className="text-muted">Upload audio files and metadata.</p>
@@ -75,7 +86,7 @@ export default function Home() {
             <div className="card-body">
               <UploadSong onDataChange={fetchArtists} artists={artists} />
             </div>
-          </section>
+          </motion.section>
         </div>
       </main>
     </div>

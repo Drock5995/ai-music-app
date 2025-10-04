@@ -298,6 +298,31 @@ p {
 .nav-drawer-link {
   display: flex;
   align-items: center;
+
+.nav-artists {
+  margin-top: var(--spacing-md);
+  border-top: 1px solid var(--border-primary);
+  padding-top: var(--spacing-md);
+}
+
+.nav-artists-title {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.nav-artist-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: var(--spacing-xs) 0;
+  cursor: pointer;
+}
+
+.nav-artist-item:hover { color: var(--text-primary); }
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-sm);
   border-radius: var(--radius-md);

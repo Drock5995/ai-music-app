@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 
 interface Song {
@@ -27,12 +28,22 @@ export default function FeaturedSongs() {
 
   if (songs.length === 0) return null;
 
+  const container = {
+    hidden: { opacity: 0, y: 6 },
+    show: { opacity: 1, y: 0, transition: { staggerChildren: 0.06 } },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 6 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+  };
+
   return (
-    <section className="featured-hero">
+    <motion.section className="featured-hero" initial="hidden" animate="show" variants={container}>
       <h2>Featured</h2>
       <div className="featured-list">
         {songs.map(s => (
-          <div key={s.id} className="featured-item">
+          <motion.div key={s.id} className="featured-item" variants={item} whileHover={{ scale: 1.02 }}>
             <div className="featured-artwork" aria-hidden>
               <img src="/default-artwork.png" alt="" />
             </div>
@@ -40,9 +51,9 @@ export default function FeaturedSongs() {
               <div className="featured-title">{s.name}</div>
               <div className="featured-artist">{s.artist}</div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 }

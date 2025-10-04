@@ -17,6 +17,7 @@ const ArtistForm: React.FC<ArtistFormProps> = ({ onSave, artist }) => {
   const [tempo_range, setTempoRange] = useState('');
   const [lyrical_themes, setLyricalThemes] = useState('');
   const [sound_descriptors, setSoundDescriptors] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; genre?: string }>({});
 
   useEffect(() => {
     if (artist) {
@@ -35,6 +36,13 @@ const ArtistForm: React.FC<ArtistFormProps> = ({ onSave, artist }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const nextErrors: typeof errors = {};
+    if (!name.trim()) nextErrors.name = 'Name is required';
+    if (!genre.trim()) nextErrors.genre = 'Genre is required';
+
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+
     onSave({
       ...artist,
       name,
@@ -52,35 +60,49 @@ const ArtistForm: React.FC<ArtistFormProps> = ({ onSave, artist }) => {
 
   return (
     <form onSubmit={handleSubmit} className="artist-form">
-      <label>Name</label>
-      <input type="text" value={name} onChange={e => setName(e.target.value)} />
-      
-      <label>Genre</label>
-      <input type="text" value={genre} onChange={e => setGenre(e.target.value)} />
+      <label htmlFor="artist-name">Name</label>
+      <input
+        id="artist-name"
+        type="text"
+        value={name}
+        placeholder="Artist name"
+  onChange={e => setName(e.target.value)}
+      />
+      {errors.name && <div role="alert" className="input-error">{errors.name}</div>}
 
-      <label>Influences (comma-separated)</label>
-      <input type="text" value={influences} onChange={e => setInfluences(e.target.value)} />
+      <label htmlFor="artist-genre">Genre</label>
+      <input
+        id="artist-genre"
+        type="text"
+        value={genre}
+        placeholder="e.g. Indie Pop"
+  onChange={e => setGenre(e.target.value)}
+      />
+      {errors.genre && <div role="alert" className="input-error">{errors.genre}</div>}
 
-      <label>Stylistic Elements (describe without naming artists)</label>
-      <textarea value={stylistic_elements} onChange={e => setStylisticElements(e.target.value)} />
+      <label htmlFor="artist-influences">Influences (comma-separated)</label>
+      <input id="artist-influences" type="text" value={influences} placeholder="Artist A, Artist B" onChange={e => setInfluences(e.target.value)} />
 
-      <label>Vocal Preferences</label>
-      <input type="text" value={vocal_preferences} onChange={e => setVocalPreferences(e.target.value)} />
+      <label htmlFor="artist-stylistic">Stylistic Elements (describe without naming artists)</label>
+      <textarea id="artist-stylistic" value={stylistic_elements} placeholder="e.g. lush synths, tight rhythms" onChange={e => setStylisticElements(e.target.value)} />
 
-      <label>Instrument Preferences</label>
-      <input type="text" value={instrument_preferences} onChange={e => setInstrumentPreferences(e.target.value)} />
+      <label htmlFor="artist-vocals">Vocal Preferences</label>
+      <input id="artist-vocals" type="text" value={vocal_preferences} placeholder="e.g. breathy, powerful" onChange={e => setVocalPreferences(e.target.value)} />
 
-      <label>Style Notes</label>
-      <textarea value={style_notes} onChange={e => setStyleNotes(e.target.value)} />
+      <label htmlFor="artist-instruments">Instrument Preferences</label>
+      <input id="artist-instruments" type="text" value={instrument_preferences} placeholder="e.g. electric guitar, strings" onChange={e => setInstrumentPreferences(e.target.value)} />
 
-      <label>Tempo Range (e.g., 120-140)</label>
-      <input type="text" value={tempo_range} onChange={e => setTempoRange(e.target.value)} />
+      <label htmlFor="artist-stylenotes">Style Notes</label>
+      <textarea id="artist-stylenotes" value={style_notes} placeholder="Short notes" onChange={e => setStyleNotes(e.target.value)} />
 
-      <label>Lyrical Themes (comma-separated)</label>
-      <input type="text" value={lyrical_themes} onChange={e => setLyricalThemes(e.target.value)} />
+      <label htmlFor="artist-tempo">Tempo Range (e.g., 120-140)</label>
+      <input id="artist-tempo" type="text" value={tempo_range} placeholder="e.g. 100-130" onChange={e => setTempoRange(e.target.value)} />
 
-      <label>Sound Descriptors (comma-separated)</label>
-      <input type="text" value={sound_descriptors} onChange={e => setSoundDescriptors(e.target.value)} />
+      <label htmlFor="artist-lyrics">Lyrical Themes (comma-separated)</label>
+      <input id="artist-lyrics" type="text" value={lyrical_themes} placeholder="love, loss, city" onChange={e => setLyricalThemes(e.target.value)} />
+
+      <label htmlFor="artist-sound">Sound Descriptors (comma-separated)</label>
+      <input id="artist-sound" type="text" value={sound_descriptors} placeholder="warm, bright, lo-fi" onChange={e => setSoundDescriptors(e.target.value)} />
 
       <button type="submit" className="button">Save Artist</button>
     </form>

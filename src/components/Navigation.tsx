@@ -1,7 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { Artist } from '../types';
 
-export default function Navigation() {
+interface NavigationProps {
+  artists?: Artist[];
+  onEditArtist?: (artist: Artist) => void;
+}
+
+export default function Navigation({ artists, onEditArtist }: NavigationProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const drawerRef = useRef<HTMLElement>(null);
@@ -132,7 +138,7 @@ export default function Navigation() {
         ref={toggleButtonRef}
         className="nav-toggle"
         onClick={toggleDrawer}
-        aria-expanded={drawerOpen ? 'true' : 'false'}
+        aria-expanded={drawerOpen}
         aria-controls="nav-drawer"
         aria-label="Toggle navigation menu"
       >
@@ -179,6 +185,26 @@ export default function Navigation() {
             </NavLink>
           ))}
         </div>
+
+        {artists && artists.length > 0 && (
+          <div className="nav-artists">
+            <h3 className="nav-artists-title">Artists</h3>
+            <div className="nav-artists-list">
+              {artists.map((a) => (
+                <button
+                  key={a.id}
+                  className="nav-artist-item"
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    onEditArtist?.(a);
+                  }}
+                >
+                  {a.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </nav>
     </>
   );
