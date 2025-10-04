@@ -1,3 +1,7 @@
 [submodule "mcp-server-browserbase"]
 	path = mcp-server-browserbase
 	url = https://github.com/browserbase/mcp-server-browserbase
+
+[submodule "web-eval-agent"]
+	path = web-eval-agent
+	url = https://github.com/Operative-Sh/web-eval-agent
