@@ -104,7 +104,7 @@ export default function SongList({
   ), [onPlay, onAddToQueue, layout, showArtwork]);
 
   if (loading) {
-    return <SongListSkeleton count={5} layout={layout} />;
+    return <SongListSkeleton count={5} layout={layout === 'compact' ? 'list' : layout} />;
   }
 
   if (error) {

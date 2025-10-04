@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { type Swiper as SwiperClass } from 'swiper';
 import { FreeMode, Mousewheel, Keyboard } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -11,7 +12,7 @@ interface GenreTabsProps {
 }
 
 export default function GenreTabs({ genres, selectedGenre, onGenreSelect }: GenreTabsProps) {
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperClass | null>(null);
 
   // Scroll to selected genre when it changes
   useEffect(() => {
@@ -59,7 +60,9 @@ export default function GenreTabs({ genres, selectedGenre, onGenreSelect }: Genr
   return (
     <div className="genre-tabs-container">
       <Swiper
-        ref={swiperRef}
+        onSwiper={(swiper: SwiperClass) => {
+          swiperRef.current = swiper;
+        }}
         modules={[FreeMode, Mousewheel, Keyboard]}
         spaceBetween={8}
         slidesPerView="auto"

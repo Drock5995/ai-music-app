@@ -11,6 +11,8 @@ interface UploadSongProps {
 export default function UploadSong({ onDataChange, artists }: UploadSongProps) {
   const { session } = useAuth();
   const [uploading, setUploading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [songName, setSongName] = useState('');
   const [selectedArtist, setSelectedArtist] = useState<string | undefined>(undefined);
   const [lyrics, setLyrics] = useState('');
@@ -30,13 +32,16 @@ export default function UploadSong({ onDataChange, artists }: UploadSongProps) {
   };
 
   const handleSubmit = async () => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+
     if (!primaryFile) {
-      alert('Please select a primary file.');
+      setErrorMessage('Please select a primary audio file.');
       return;
     }
 
     if (!session) {
-      alert('You must be logged in to upload a song.');
+      setErrorMessage('You must be logged in to upload a song.');
       return;
     }
 
@@ -96,7 +101,7 @@ export default function UploadSong({ onDataChange, artists }: UploadSongProps) {
           throw dbError;
         }
 
-        alert('Song uploaded successfully!');
+        setSuccessMessage('Song uploaded successfully!');
         setSongName('');
         setSelectedArtist(undefined);
         setLyrics('');
@@ -106,7 +111,7 @@ export default function UploadSong({ onDataChange, artists }: UploadSongProps) {
       };
 
     } catch (error: any) {
-      alert(error.message);
+      setErrorMessage(error.message || 'Upload failed');
     } finally {
       setUploading(false);
     }
@@ -117,6 +122,12 @@ export default function UploadSong({ onDataChange, artists }: UploadSongProps) {
       <div className="section-header">
         <h2>Upload New Song</h2>
         <p>Add a new track to your music library</p>
+      </div>
+
+      {/* Inline success/error messages for better UX */}
+      <div aria-live="polite" className="upload-notice">
+        {successMessage && <div className="notice notice--success">{successMessage}</div>}
+        {errorMessage && <div className="notice notice--error">{errorMessage}</div>}
       </div>
 
       <form className="upload-form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>

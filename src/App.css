@@ -860,6 +860,112 @@ p {
   color: var(--accent-primary);
 }
 
+/* Dashboard layout used by Home and Dashboard components */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "nav main"
+    "nav main";
+  gap: var(--spacing-lg);
+  min-height: 100vh;
+}
+
+.grid-nav {
+  padding: var(--spacing-md);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border-right: 1px solid var(--border-primary);
+}
+
+.grid-main {
+  padding: var(--spacing-lg);
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.home-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid var(--border-primary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevation-1);
+}
+
+.section-header h2 {
+  margin-bottom: var(--spacing-xs);
+}
+
+.card-body {
+  margin-top: var(--spacing-sm);
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "main";
+  }
+
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Featured hero */
+.featured-hero {
+  margin-bottom: var(--spacing-lg);
+}
+
+.featured-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.featured-item {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  padding: var(--spacing-sm);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+}
+
+.featured-artwork img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.featured-title {
+  font-weight: var(--font-weight-semibold);
+}
+
+.upload-notice .notice {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.notice--success {
+  background: rgba(29,185,84,0.08);
+  color: var(--accent-primary);
+  border: 1px solid rgba(29,185,84,0.12);
+}
+
+.notice--error {
+  background: rgba(255,80,80,0.06);
+  color: #ff6b6b;
+  border: 1px solid rgba(255,80,80,0.12);
+}
+
 .song-card__actions-menu {
   position: absolute;
   top: 100%;

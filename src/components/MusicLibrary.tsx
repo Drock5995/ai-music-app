@@ -8,7 +8,6 @@ import PersonalizedHeader from './PersonalizedHeader';
 import FloatingActionButton from './FloatingActionButton';
 import { useQueue } from '../contexts/QueueContext';
 import { useAuth } from '../hooks/useAuth';
-import { useTheme } from '../contexts/ThemeContext';
 
 export default function MusicLibrary() {
   const { playSong, addToQueue, clearQueue } = useQueue();
@@ -77,9 +76,6 @@ export default function MusicLibrary() {
           // Placeholder for playlist FAB action
           alert('Open playlists');
         }}
-        label="Playlists"
-        position="bottom-right"
-        variant="primary"
       />
     </div>
   );
