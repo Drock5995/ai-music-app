@@ -1,18 +1,14 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { Song, Artist } from '../types';
+import { Artist } from '../types';
 import { useAuth } from '../hooks/useAuth';
-import { useQueue } from '../contexts/QueueContext';
 import UploadSong from './UploadSong';
-import ArtistList from './ArtistList';
 import ArtistForm from './ArtistForm';
 import Navigation from './Navigation';
 
 export default function Dashboard() {
   const { session } = useAuth();
   const [artists, setArtists] = useState<Artist[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [showArtistForm, setShowArtistForm] = useState(false);
   const [editingArtist, setEditingArtist] = useState<Artist | undefined>(undefined);
 
@@ -29,9 +25,7 @@ export default function Dashboard() {
 
       setArtists(data || []);
     } catch (error: any) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      console.error('Error fetching artists:', error.message);
     }
   };
 
@@ -58,7 +52,7 @@ export default function Dashboard() {
         setEditingArtist(undefined);
       }
     } catch (error: any) {
-      setError(error.message);
+      console.error('Error saving artist:', error.message);
     }
   };
 
@@ -67,15 +61,7 @@ export default function Dashboard() {
     setShowArtistForm(true);
   };
 
-  const handleDeleteArtist = async (artistId: number) => {
-    try {
-      const { error } = await supabase.from('artists').delete().eq('id', artistId);
-      if (error) throw error;
-      fetchArtists(); // Refresh the list
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+
 
   const handleCancelEdit = () => {
     setShowArtistForm(false);

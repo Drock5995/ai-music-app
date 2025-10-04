@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { Song } from '../types';
 import { supabase } from '../supabaseClient';
 import { useQueue } from '../contexts/QueueContext';
 import QueueDisplay from './QueueDisplay';
@@ -33,7 +32,7 @@ export default function Player() {
     } else {
       setCurrentFilePath(null);
     }
-  }, [currentSong?.id, currentSong?.file_path]);
+  }, [currentSong]);
 
   useEffect(() => {
     const audio = audioRef.current;
