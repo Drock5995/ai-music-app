@@ -3,13 +3,19 @@ import { supabase } from '../supabaseClient';
 import { Song } from '../types';
 import SongList from './SongList';
 import Navigation from './Navigation';
+import LayoutToggle from './LayoutToggle';
+import PersonalizedHeader from './PersonalizedHeader';
+import FloatingActionButton from './FloatingActionButton';
 import { useQueue } from '../contexts/QueueContext';
+import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function MusicLibrary() {
   const { playSong, addToQueue, clearQueue } = useQueue();
   const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [layout, setLayout] = useState<'list' | 'grid'>('list');
 
   const fetchSongs = async () => {
     try {
@@ -46,11 +52,35 @@ export default function MusicLibrary() {
   return (
     <div className="dashboard-layout">
       <Navigation />
+      <PersonalizedHeader
+        userName="User"
+        userAvatarUrl="/default-avatar.png"
+      />
       <main className="main-content">
-        <h1>Music Library</h1>
+        <div className="library-header">
+          <h1>Music Library</h1>
+          <LayoutToggle layout={layout} onLayoutChange={(newLayout) => setLayout(newLayout as 'list' | 'grid')} />
+        </div>
         {error && <div>Error: {error}</div>}
-        <SongList songs={songs} loading={loading} error={error} onDataChange={fetchSongs} onPlay={handlePlay} onAddToQueue={addToQueue} />
+        <SongList
+          songs={songs}
+          loading={loading}
+          error={error}
+          onDataChange={fetchSongs}
+          onPlay={handlePlay}
+          onAddToQueue={addToQueue}
+          layout={layout}
+        />
       </main>
+      <FloatingActionButton
+        onClick={() => {
+          // Placeholder for playlist FAB action
+          alert('Open playlists');
+        }}
+        label="Playlists"
+        position="bottom-right"
+        variant="primary"
+      />
     </div>
   );
 }

@@ -1,0 +1,34 @@
+/* Virtualized List Styles */
+.virtualized-list {
+  position: relative;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) transparent;
+}
+
+.virtualized-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.virtualized-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.virtualized-list::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 3px;
+}
+
+.virtualized-list::-webkit-scrollbar-thumb:hover {
+  background: var(--border-secondary);
+}
+
+/* Performance optimizations */
+.song-list--virtualized {
+  contain: layout style paint;
+}
+
+.song-card {
+  contain: layout style;
+  will-change: transform;
+}

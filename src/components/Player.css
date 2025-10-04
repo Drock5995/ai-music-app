@@ -1,0 +1,50 @@
+
+.player-container {
+  position: fixed;
+  bottom: 60px; /* Height of the bottom nav */
+  left: 0;
+  right: 0;
+  background-color: #181818;
+  border-top: 1px solid #282828;
+  z-index: 1000;
+}
+
+.mini-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  height: 60px;
+}
+
+.mini-player .song-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mini-player .song-info p {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-player .song-name {
+  font-weight: 600;
+}
+
+.mini-player .artist-name {
+  font-size: 14px;
+  color: #b3b3b3;
+}
+
+.mini-player .controls button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.expanded-player {
+  /* Styles for the expanded player will go here */
+}

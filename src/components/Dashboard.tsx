@@ -71,7 +71,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard-layout">
       <Navigation />
-      <header className="app-header">
+      <header className="app-header" style={{ gridArea: 'nav' }}>
         <div className="header-content">
           <h1>My Music</h1>
           <button onClick={handleLogout} className="button--logout" aria-label="Logout">
@@ -84,7 +84,7 @@ export default function Dashboard() {
           </button>
         </div>
       </header>
-      <main className="main-content">
+      <main className="main-content" style={{ gridArea: 'main' }}>
         {/* Artists Management Section */}
         <section className="dashboard-section">
           <div className="section-header">

@@ -42,10 +42,11 @@ const ArtistList: React.FC<ArtistListProps> = ({ artists, onEdit, onDelete }) =>
                 value={showPrompt[artist.id]}
                 readOnly
                 rows={10}
-                style={{ width: '100%', backgroundColor: 'var(--surface)', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: '4px', padding: '0.8rem' }}
+                className="textarea"
+                aria-label="AI generated prompt for artist"
               />
-              <button onClick={() => navigator.clipboard.writeText(showPrompt[artist.id])} className="button button--secondary" style={{ marginTop: '0.5rem' }}>Copy to Clipboard</button>
-              <button onClick={() => handleClosePrompt(artist.id)} className="button button--secondary" style={{ marginTop: '0.5rem' }}>Close</button>
+              <button onClick={() => navigator.clipboard.writeText(showPrompt[artist.id])} className="button button--secondary m-t-sm">Copy to Clipboard</button>
+              <button onClick={() => handleClosePrompt(artist.id)} className="button button--secondary m-t-sm">Close</button>
             </div>
           )}
         </div>

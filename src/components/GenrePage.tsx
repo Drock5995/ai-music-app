@@ -3,7 +3,9 @@ import { supabase } from '../supabaseClient';
 import { Song } from '../types';
 import SongList from './SongList';
 import Navigation from './Navigation';
+import LayoutToggle from './LayoutToggle';
 import { useQueue } from '../contexts/QueueContext';
+import GenreTabs from './GenreTabs';
 
 export default function GenrePage() {
   const { playSong, addToQueue } = useQueue();
@@ -12,6 +14,7 @@ export default function GenrePage() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [layout, setLayout] = useState<'list' | 'grid'>('list');
 
   useEffect(() => {
     // Fetch distinct genres from artists table
@@ -31,6 +34,9 @@ export default function GenrePage() {
           });
         }
         setGenres(Array.from(uniqueGenres));
+        if (uniqueGenres.size > 0) {
+          setSelectedGenre(Array.from(uniqueGenres)[0]);
+        }
       } catch (err: any) {
         setError(err.message);
       }
@@ -70,17 +76,22 @@ export default function GenrePage() {
       <main className="main-content">
         <h1>Genres</h1>
         {error && <div>Error: {error}</div>}
-        <div className="genre-buttons" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-          {genres.map((genre) => (
-            <button key={genre} onClick={() => setSelectedGenre(genre)} className="button button--secondary">
-              {genre}
-            </button>
-          ))}
-        </div>
+        <GenreTabs genres={genres} selectedGenre={selectedGenre} onGenreSelect={setSelectedGenre} />
         {selectedGenre && (
           <>
-            <h2>Songs in {selectedGenre}</h2>
-            <SongList songs={songs} loading={loading} error={error} onDataChange={() => {}} onPlay={playSong} onAddToQueue={addToQueue} />
+            <div className="genre-songs-header">
+              <h2>Songs in {selectedGenre}</h2>
+              <LayoutToggle layout={layout} onLayoutChange={(newLayout) => setLayout(newLayout as 'list' | 'grid')} />
+            </div>
+            <SongList
+              songs={songs}
+              loading={loading}
+              error={error}
+              onDataChange={() => {}}
+              onPlay={playSong}
+              onAddToQueue={addToQueue}
+              layout={layout}
+            />
           </>
         )}
       </main>

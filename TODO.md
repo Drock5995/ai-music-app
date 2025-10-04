@@ -1,46 +1,33 @@
-# UI/UX Improvements TODO
+# Mobile-First Music Library UI/UX Enhancement Plan
 
-## 1. Modern Design System
-- [x] Update CSS custom properties for comprehensive color palette, typography, and spacing
-- [ ] Define consistent component styles (buttons, cards, inputs)
-- [ ] Add utility classes for layout and responsiveness
+## Dependencies Installation
+- [x] Install framer-motion for animations
+- [x] Install swiper for carousel functionality
 
-## 2. Navigation Improvements
-- [x] Replace inline styles with CSS classes in Navigation.tsx
-- [x] Add icons to navigation links
-- [ ] Improve responsive design for mobile
+## Core Components Enhancement
+- [ ] Complete PersonalizedHeader component
+- [ ] Create ThemeContext and ThemeProvider for dark/light theming
+- [ ] Create FloatingActionButton component for playlists
+- [ ] Add ThemeProvider to App.tsx
 
-## 3. Enhanced Player UI
-- [ ] Modernize player controls layout
-- [ ] Add album art display placeholder
-- [ ] Improve mobile responsiveness
-- [ ] Add better visual feedback for controls
+## MusicLibrary Integration
+- [ ] Integrate PersonalizedHeader into MusicLibrary
+- [x] Add swipe gestures to SongCard using framer-motion
+- [x] Enhance Search with live filtering and highlighting
+- [x] Add no-results animations to Search
 
-## 4. Card-Based Song List
-- [ ] Convert song list items to card layout
-- [ ] Add hover effects and animations
-- [ ] Improve button styling and interactions
+## GenreTabs Upgrade
+- [x] Upgrade GenreTabs to swiper carousel with parallax effects
 
-## 5. Search and Filter Functionality
-- [ ] Add search input to MusicLibrary
-- [ ] Implement filter options (artist, genre)
-- [ ] Update SongList to handle filtered data
+## Player Enhancements
+- [ ] Add animated progress bar to PlayerEnhanced using framer-motion
 
-## 6. Queue Display Enhancement
-- [ ] Make queue display modal or collapsible
-- [ ] Improve queue item interactions
+## Accessibility & Performance
+- [ ] Add accessibility improvements (ARIA announcements, keyboard navigation, pinch zoom)
+- [ ] Optimize LazyImage with below-fold lazy loading
+- [ ] Update compact view toggle if needed
 
-## 7. Accessibility Improvements
-- [ ] Enhance keyboard navigation
-- [ ] Add missing ARIA labels and roles
-- [ ] Improve focus management
-
-## 8. Loading States and Animations
-- [ ] Add skeleton loaders for song list
-- [ ] Implement smooth transitions for modals
-- [ ] Add loading animations for buttons
-
-## 9. Responsive Design
-- [ ] Improve mobile layout for all components
-- [ ] Add tablet-specific breakpoints
-- [ ] Test and fix responsive issues
+## Testing & Verification
+- [ ] Test all enhancements on mobile devices
+- [ ] Verify animations and gestures work smoothly
+- [ ] Check accessibility compliance

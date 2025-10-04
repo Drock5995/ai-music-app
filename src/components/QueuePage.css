@@ -1,0 +1,31 @@
+
+.queue-page {
+  padding: 16px;
+}
+
+.queue-page h1 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.queue-page ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.queue-page li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #282828;
+}
+
+.queue-page .song-details {
+  cursor: pointer;
+}
+
+.queue-page .current-song {
+  color: #1db954;
+}
