@@ -44,11 +44,13 @@ export default function MusicLibrary() {
   }, []);
 
   return (
-    <div>
+    <div className="dashboard-layout">
       <Navigation />
-      <h1>Music Library</h1>
-      {error && <div>Error: {error}</div>}
-      <SongList songs={songs} loading={loading} error={error} onDataChange={fetchSongs} onPlay={handlePlay} onAddToQueue={addToQueue} />
+      <main className="main-content">
+        <h1>Music Library</h1>
+        {error && <div>Error: {error}</div>}
+        <SongList songs={songs} loading={loading} error={error} onDataChange={fetchSongs} onPlay={handlePlay} onAddToQueue={addToQueue} />
+      </main>
     </div>
   );
 }

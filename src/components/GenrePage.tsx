@@ -65,23 +65,25 @@ export default function GenrePage() {
   }, [selectedGenre]);
 
   return (
-    <div>
+    <div className="dashboard-layout">
       <Navigation />
-      <h1>Genres</h1>
-      {error && <div>Error: {error}</div>}
-      <div>
-        {genres.map((genre) => (
-          <button key={genre} onClick={() => setSelectedGenre(genre)} style={{ marginRight: '0.5rem' }}>
-            {genre}
-          </button>
-        ))}
-      </div>
-      {selectedGenre && (
-        <>
-          <h2>Songs in {selectedGenre}</h2>
-          <SongList songs={songs} loading={loading} error={error} onDataChange={() => {}} onPlay={playSong} onAddToQueue={addToQueue} />
-        </>
-      )}
+      <main className="main-content">
+        <h1>Genres</h1>
+        {error && <div>Error: {error}</div>}
+        <div className="genre-buttons" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
+          {genres.map((genre) => (
+            <button key={genre} onClick={() => setSelectedGenre(genre)} className="button button--secondary">
+              {genre}
+            </button>
+          ))}
+        </div>
+        {selectedGenre && (
+          <>
+            <h2>Songs in {selectedGenre}</h2>
+            <SongList songs={songs} loading={loading} error={error} onDataChange={() => {}} onPlay={playSong} onAddToQueue={addToQueue} />
+          </>
+        )}
+      </main>
     </div>
   );
 }

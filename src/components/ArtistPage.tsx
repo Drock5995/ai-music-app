@@ -52,21 +52,23 @@ export default function ArtistPage() {
   if (!artist) return <div>Artist not found.</div>;
 
   return (
-    <div>
+    <div className="dashboard-layout">
       <Navigation />
-      <h1>{artist.name}</h1>
-      <p>Genre: {artist.genre || 'N/A'}</p>
-      <p>Influences: {artist.influences?.join(', ') || 'N/A'}</p>
-      <p>Stylistic Elements: {artist.stylistic_elements || 'N/A'}</p>
-      <p>Vocal Preferences: {artist.vocal_preferences || 'N/A'}</p>
-      <p>Instrument Preferences: {artist.instrument_preferences || 'N/A'}</p>
-      <p>Style Notes: {artist.style_notes || 'N/A'}</p>
-      <p>Tempo Range: {artist.tempo_range || 'N/A'}</p>
-      <p>Lyrical Themes: {artist.lyrical_themes?.join(', ') || 'N/A'}</p>
-      <p>Sound Descriptors: {artist.sound_descriptors?.join(', ') || 'N/A'}</p>
+      <main className="main-content">
+        <h1>{artist.name}</h1>
+        <p>Genre: {artist.genre || 'N/A'}</p>
+        <p>Influences: {artist.influences?.join(', ') || 'N/A'}</p>
+        <p>Stylistic Elements: {artist.stylistic_elements || 'N/A'}</p>
+        <p>Vocal Preferences: {artist.vocal_preferences || 'N/A'}</p>
+        <p>Instrument Preferences: {artist.instrument_preferences || 'N/A'}</p>
+        <p>Style Notes: {artist.style_notes || 'N/A'}</p>
+        <p>Tempo Range: {artist.tempo_range || 'N/A'}</p>
+        <p>Lyrical Themes: {artist.lyrical_themes?.join(', ') || 'N/A'}</p>
+        <p>Sound Descriptors: {artist.sound_descriptors?.join(', ') || 'N/A'}</p>
 
-      <h2>Songs by {artist.name}</h2>
-      <SongList songs={songs} loading={loading} error={error} onDataChange={() => {}} onPlay={playSong} onAddToQueue={addToQueue} />
+        <h2>Songs by {artist.name}</h2>
+        <SongList songs={songs} loading={loading} error={error} onDataChange={() => {}} onPlay={playSong} onAddToQueue={addToQueue} />
+      </main>
     </div>
   );
 }
