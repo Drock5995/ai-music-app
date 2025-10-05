@@ -59,9 +59,12 @@ export default function Navigation({ artists, onEditArtist }: NavigationProps) {
     const firstFocusable = drawerRef.current?.querySelector('a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])') as HTMLElement;
     firstFocusable?.focus();
 
+    // Capture current toggle ref for cleanup
+    const toggleBtn = toggleButtonRef.current;
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      toggleButtonRef.current?.focus();
+      toggleBtn?.focus();
     };
   }, [drawerOpen]);
 
@@ -138,7 +141,7 @@ export default function Navigation({ artists, onEditArtist }: NavigationProps) {
         ref={toggleButtonRef}
         className="nav-toggle"
         onClick={toggleDrawer}
-        aria-expanded={drawerOpen}
+  aria-expanded={drawerOpen ? true : false}
         aria-controls="nav-drawer"
         aria-label="Toggle navigation menu"
       >

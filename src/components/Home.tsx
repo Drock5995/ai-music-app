@@ -52,8 +52,6 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleCancelEdit = () => setEditingArtist(undefined);
-
   return (
     <div className="dashboard-layout">
       {/* left nav / header area (keeps parity with Dashboard) */}

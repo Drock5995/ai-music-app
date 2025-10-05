@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import { Song } from '../types';
 import { SongListSkeleton } from './LoadingSkeleton';
@@ -26,7 +26,10 @@ export default function SongList({
   layout = 'list',
   showArtwork = true
 }: SongListProps) {
+  // editing state reserved for future inline edit feature
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editingSongId, setEditingSongId] = useState<number | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editForm, setEditForm] = useState({ name: '', artist: '' });
   const [lyricsSong, setLyricsSong] = useState<Song | null>(null);
 
@@ -101,7 +104,7 @@ export default function SongList({
       layout={layout}
       showArtwork={showArtwork}
     />
-  ), [onPlay, onAddToQueue, layout, showArtwork]);
+  ), [onPlay, onAddToQueue, layout, showArtwork, startEditing, handleDelete]);
 
   if (loading) {
     return <SongListSkeleton count={5} layout={layout === 'compact' ? 'list' : layout} />;

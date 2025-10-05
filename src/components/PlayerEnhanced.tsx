@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { useQueue } from '../contexts/QueueContext';
@@ -15,6 +15,7 @@ export default function PlayerEnhanced() {
   const [currentFilePath, setCurrentFilePath] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isPlayingAlternate, setIsPlayingAlternate] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
   const [shouldPlay, setShouldPlay] = useState(false);
@@ -27,6 +28,7 @@ export default function PlayerEnhanced() {
   useEffect(() => {
     if (currentSong) {
       setCurrentFilePath(currentSong.file_path);
+      setIsPlayingAlternate(false);
       setProgress(0);
       setShouldPlay(true);
     } else {
@@ -66,14 +68,24 @@ export default function PlayerEnhanced() {
     };
   }, [currentFilePath, shouldPlay]);
 
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (isPlaying) {
-      audio.pause();
+    if (audio.paused) {
+      audio.play().catch(() => {});
     } else {
-      audio.play();
+      audio.pause();
     }
+  }, []);
+
+  const toggleAlternate = () => {
+    if (!currentSong || !currentSong.secondary_file_path) return;
+    const newAlt = !isPlayingAlternate;
+    setIsPlayingAlternate(newAlt);
+    // swap file path to secondary or back to primary
+    setCurrentFilePath(newAlt ? currentSong.secondary_file_path! : currentSong.file_path);
+    // ensure we auto-play when switching
+    setShouldPlay(true);
   };
 
   // Keyboard navigation support
@@ -113,13 +125,7 @@ export default function PlayerEnhanced() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isPlaying, volume, isExpanded, togglePlay, prevSong, nextSong]);
 
-  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    const newTime = (parseFloat(e.target.value) / 100) * audio.duration;
-    audio.currentTime = newTime;
-    setProgress(parseFloat(e.target.value));
-  };
+  // progress input handler intentionally omitted (not used in current UI)
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
@@ -145,6 +151,13 @@ export default function PlayerEnhanced() {
           <p className="song-name">{currentSong.name}</p>
           <p className="artist-name">{getArtistName()}</p>
         </div>
+        {/* Alternate version toggle (mini) */}
+        {currentSong.secondary_file_path && (
+          <button onClick={(e) => { e.stopPropagation(); toggleAlternate(); }} aria-label={isPlayingAlternate ? 'Play primary version' : 'Play alternate version'} aria-pressed={isPlayingAlternate ? 'true' : 'false'} className={`alt-toggle ${isPlayingAlternate ? 'active' : ''}`}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16v10H4z"/><path d="M8 11h8"/></svg>
+          </button>
+        )}
+
         <button onClick={togglePlay} aria-label={isPlaying ? 'Pause' : 'Play'} className="play-pause-btn">
           {isPlaying ? (
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
@@ -184,6 +197,11 @@ export default function PlayerEnhanced() {
           </motion.div>
           <div className="controls">
             <button onClick={prevSong} aria-label="Previous song">⏮</button>
+            {currentSong.secondary_file_path && (
+              <button onClick={toggleAlternate} aria-pressed={isPlayingAlternate} aria-label={isPlayingAlternate ? 'Play primary version' : 'Play alternate version'} title={isPlayingAlternate ? 'Primary version' : 'Alternate version'}>
+                {isPlayingAlternate ? 'Primary' : 'Alt'}
+              </button>
+            )}
             <button onClick={togglePlay} aria-label={isPlaying ? 'Pause' : 'Play'}>
               {isPlaying ? '⏸' : '▶'}
             </button>
@@ -210,7 +228,6 @@ export default function PlayerEnhanced() {
         src={currentFilePath ? getSongUrl(currentFilePath) : undefined}
         onEnded={nextSong}
         className="audio-player"
-        style={{ display: 'none' }}
       >
         Your browser does not support the audio element.
       </audio>

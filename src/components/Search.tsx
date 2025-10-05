@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { Song } from '../types';
@@ -54,7 +54,7 @@ export default function Search() {
   };
 
   // Perform search
-  const performSearch = async (searchQuery: string) => {
+  const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([]);
       return;
@@ -113,7 +113,7 @@ export default function Search() {
     searchResults.sort((a, b) => b.relevance - a.relevance);
     setResults(searchResults.slice(0, 20)); // Limit to 20 results
     setIsSearching(false);
-  };
+  }, [songs, activeFilter]);
 
   // Debounced search
   useEffect(() => {
@@ -122,7 +122,7 @@ export default function Search() {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [query, activeFilter, songs]);
+  }, [query, activeFilter, songs, performSearch]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();

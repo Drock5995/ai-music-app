@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { type Swiper as SwiperClass } from 'swiper';
 import { FreeMode, Mousewheel, Keyboard } from 'swiper/modules';

@@ -7,7 +7,7 @@ import LayoutToggle from './LayoutToggle';
 import PersonalizedHeader from './PersonalizedHeader';
 import FloatingActionButton from './FloatingActionButton';
 import { useQueue } from '../contexts/QueueContext';
-import { useAuth } from '../hooks/useAuth';
+import './MusicLibrary.css';
 
 export default function MusicLibrary() {
   const { playSong, addToQueue, clearQueue } = useQueue();
@@ -49,11 +49,16 @@ export default function MusicLibrary() {
   }, []);
 
   return (
-    <div className="dashboard-layout">
+    <div className="dashboard-layout music-library-root">
       <Navigation />
       <PersonalizedHeader
         userName="User"
         userAvatarUrl="/default-avatar.png"
+        greeting={undefined}
+        onSettingsClick={() => {
+          // toggle theme placeholder
+          document.documentElement.classList.toggle('dark');
+        }}
       />
       <main className="main-content">
         <div className="library-header">

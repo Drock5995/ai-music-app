@@ -6,13 +6,15 @@ interface PersonalizedHeaderProps {
   userAvatarUrl: string;
   greeting?: string;
   onSettingsClick?: () => void;
+  accentColor?: string;
 }
 
 const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   userName,
   userAvatarUrl,
   greeting = "Good morning",
-  onSettingsClick
+  onSettingsClick,
+  accentColor
 }) => {
   const getTimeBasedGreeting = () => {
     const hour = new Date().getHours();
@@ -24,37 +26,17 @@ const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   const displayGreeting = greeting || getTimeBasedGreeting();
 
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '1rem',
-        background: 'rgba(29, 185, 84, 0.1)',
-        backdropFilter: 'blur(10px)',
-        borderRadius: '0 0 16px 16px',
-        marginBottom: '1rem',
-        position: 'relative'
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+    <motion.header className="personalized-header" initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
+      <div className="personalized-header__left">
         <motion.img
           src={userAvatarUrl}
           alt={`${userName} avatar`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            border: '2px solid rgba(29, 185, 84, 0.3)',
-            objectFit: 'cover'
-          }}
+          className="personalized-header__avatar"
+          style={{ borderColor: accentColor || undefined }}
         />
-        <div>
+        <div className="personalized-header__meta">
           <motion.p
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -68,19 +50,16 @@ const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
           >
             {displayGreeting}
           </motion.p>
-          <motion.h1
+          <motion.h1 className="personalized-header__title"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.3 }}
-            style={{
-              margin: 0,
-              fontSize: '1.25rem',
-              fontWeight: 700,
-              color: 'white'
-            }}
           >
             {userName}
           </motion.h1>
+          <motion.p className="personalized-header__mood" aria-live="polite">
+            Today's mood: <strong className="personalized-header__mood-accent">Chill & Focused</strong> — recommended: "Lo-Fi Beats"
+          </motion.p>
         </div>
       </div>
 

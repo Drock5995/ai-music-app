@@ -33,6 +33,29 @@ const SongCard = memo(function SongCard({
     return typeof song.artist === 'string' ? song.artist : (song.artist as any)?.name || 'Unknown Artist';
   };
 
+  // Artwork: prefer song.artwork_url or song.cover, otherwise generate initials with color
+  const getArtwork = (song: Song) => {
+    const artworkUrl = (song as any).artwork_url || (song as any).cover_url || null;
+    if (artworkUrl) return { type: 'image', src: artworkUrl };
+
+    // generate initials and color based on song name or artist
+    const label = song.name || getArtistName(song) || '♫';
+    const initials = label
+      .split(' ')
+      .slice(0, 2)
+      .map((s: string) => (s && s.length > 0 ? s[0] : ''))
+      .join('')
+      .toUpperCase() || '♪';
+    // simple string to color
+    let hash = 0;
+    for (let i = 0; i < label.length; i++) hash = label.charCodeAt(i) + ((hash << 5) - hash);
+    const hue = Math.abs(hash) % 360;
+    const bg = `hsl(${hue}deg 65% 45%)`;
+    return { type: 'placeholder', initials, bg };
+  };
+
+  const artwork = getArtwork(song);
+
   const handlePlay = () => {
     onPlay(song);
   };
@@ -139,13 +162,14 @@ const SongCard = memo(function SongCard({
     >
       {/* Artwork */}
       {showArtwork && (
-        <div className="song-card__artwork">
-          <div className="song-card__artwork-placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M9 19V6l12-3v13M9 12l12-3M9 16V6l12-3v7" />
-              <circle cx="6" cy="19" r="3" />
-            </svg>
-          </div>
+        <div className="song-card__artwork" aria-hidden>
+          {artwork.type === 'image' ? (
+            <img src={artwork.src} alt={`${song.name} artwork`} className="song-card__artwork-image" />
+          ) : (
+            <div className="song-card__artwork-generated" style={{ background: artwork.bg }}>
+              <span className="song-card__artwork-initials">{artwork.initials}</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -157,7 +181,7 @@ const SongCard = memo(function SongCard({
         </div>
 
         {/* Quick Actions */}
-        <div className="song-card__quick-actions">
+        <div className="song-card__quick-actions" role="group" aria-label="Quick actions">
           <button
             className="song-card__action-btn song-card__action-btn--play"
             onClick={handlePlay}
